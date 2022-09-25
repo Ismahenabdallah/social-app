@@ -1,0 +1,33 @@
+const mongoose = require("mongoose");
+
+const userSchema = new mongoose.Schema({
+  fullname: String,
+  email: String,
+  pic:{
+    type:String,
+    default:"https://res.cloudinary.com/cnq/image/upload/v1586197723/noimage_d4ipmd.png"
+   },
+  googleId: String,
+  secret: String,
+  password:String,
+  confirmPassword:String,
+  status: {
+    type: String, 
+    enum: ['Desactive', 'Active'],
+    default: 'Desactive'
+  },
+  coverPic: String,
+  about: String,
+  livesIn: String,
+  worksAt: String,
+  relationship: String,
+  country: String,
+  followers:[],
+  following:[]
+  
+},
+{ timestamps: true }
+
+);
+
+module.exports = mongoose.model("users", userSchema);
