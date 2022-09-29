@@ -14,7 +14,7 @@ export default function Routing({ user }) {
     <div>
       <Routes >
 
-      <Route path="/home" element={
+      <Route path={`/home/${user.id}`} element={
          
          <PrivateRouter user={user}>
            <Home/>

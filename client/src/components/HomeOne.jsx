@@ -36,7 +36,13 @@ const handleFollow = async () => {
       <ul >
       {users.map((users) => {
          if (auth._id !== users._id) return <li  key={users._id} className=' m-2 flex font-adelia text-gray-500  space-x-1 text-clip text-sm ml-4 '>
-        <img  className ='w-6 h-6'src={users.pic} alt="" /><p className={`w-32`}>{users.fullname}</p> 
+        <img  className ='w-6 h-6'src={users.pic} alt="" />
+        <div className='w-32 block'>
+        <p className={`w-32 text-primary`}>{users.fullname}</p> 
+        <p className={`w-32 `}>{users.email}</p> 
+        </div>
+        
+       
          <button   onClick={handleFollow} className={` border  p-2 capitalize text-primary border-5 bg-gray-300 hover:bg-slate-500`} >follow  </button>
          </li> ;
       })} 

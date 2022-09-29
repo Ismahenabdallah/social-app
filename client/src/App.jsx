@@ -27,6 +27,7 @@ export default function App() {
   const auth = useSelector(state => state.auth)
   const user = {
     isConnected: auth.isConnected,
+    id:auth.user._id,
     pic:auth.user.pic,
     fullname:auth.user.fullname,
     email:auth.user.email,
