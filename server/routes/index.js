@@ -2,7 +2,7 @@ const express = require("express");
 const Router = express.Router();
 //const passport = require("passport");
 const { Register, verifyUser, Login, forgotPassword, resetPassword } = require("../controllers/auth_Simple");
-const { getAllUsers, followUsers, unfollowUsers } = require("../controllers/user_Ctr");
+const { getAllUsers, followUsers, unfollowUsers, FindSingleUser } = require("../controllers/user_Ctr");
 const access_login = require("../middleware/access_login");
 
 ///Router.get(
@@ -29,6 +29,7 @@ Router.get("/confirm/:activation_token", verifyUser)
 Router.post('/forget', forgotPassword)
 Router.post('/reset/', access_login, resetPassword)
 Router.get('/getallusers', getAllUsers)
-Router.put('/follow',followUsers)
+Router.get('/user/:id', FindSingleUser)
+Router.put('/follow' ,followUsers)
 Router.put('/unfollow', unfollowUsers)
 module.exports = Router;

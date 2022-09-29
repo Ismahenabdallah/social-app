@@ -6,6 +6,7 @@ import ForceRedirect from './ForceRedirect';
 import PrivateRouter from './PrivateRouter'
 import NoAccess from './NoAccess';
 import NotFound from './NotFound';
+import Profile from '../pages/Profile';
 export default function Routing({ user }) {
 
 /*****style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(0px, 10.4px, 0px);" */
@@ -14,10 +15,18 @@ export default function Routing({ user }) {
     <div>
       <Routes >
 
-      <Route path={`/home/${user.id}`} element={
+      <Route path={`/home`} element={
          
          <PrivateRouter user={user}>
            <Home/>
+         </PrivateRouter>
+         
+        
+        } />
+        <Route path={`/profile/${user.id}`} element={
+         
+         <PrivateRouter user={user}>
+           <Profile/>
          </PrivateRouter>
          
         

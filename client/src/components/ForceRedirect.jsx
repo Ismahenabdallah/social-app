@@ -6,7 +6,7 @@ KIF TEBDA CONNECTE M TADHERLIKCH PAGE INSCRIRE */
 
 const ForceRedirect = ({user, children}) =>{
     if(user.isConnected){
-        return <Navigate to={`/home/${user.id}`}replace/> 
+        return <Navigate to={`/home`}replace/> 
       } 
       return children
 }

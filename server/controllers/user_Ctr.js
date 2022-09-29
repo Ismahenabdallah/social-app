@@ -19,7 +19,7 @@ UserModel.findByIdAndUpdate(req.body.followId,{
   if(err){
       return res.status(422).json({error:err})
   }
-User.findByIdAndUpdate(req.user._id,{
+UserModel.findByIdAndUpdate(req.user._id,{
     $push:{following:req.body.followId}
     
 },{new:true}).then(result=>{
@@ -35,7 +35,17 @@ User.findByIdAndUpdate(req.user._id,{
 
 
 };
+const FindSingleUser = async (req, res) => {
+  const id = req.params.id
+  try {
+    
+      const data = await UserModel.findOne({_id:req.params.id})
+      res.status(200).json(data)
 
+  } catch (error) {
+      res.status(404).json(error.message)
+  }
+}
 
 // Unfollow a User
 // changed
@@ -64,5 +74,5 @@ const unfollowUsers = async (req, res) => {
 module.exports = {
   getAllUsers,
   followUsers,
-  unfollowUsers,
+  unfollowUsers,FindSingleUser
 }
