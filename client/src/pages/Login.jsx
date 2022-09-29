@@ -16,7 +16,7 @@ export default function Login() {
       [e.target.name]: e.target.value,
     });
   };
-  const errors = useSelector((state) => state.errors);
+  const errors = useSelector((state) => state.errors.errors);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -99,7 +99,7 @@ export default function Login() {
         </div>
       </div>
       <div className="mt-64 mr-11 ">
-        {errors.msg ? (
+        {errors ? (
           <div className="py-5 px-2 w-40 bg-red-400 ">{errors.msg}</div>
         ) : (
           ""

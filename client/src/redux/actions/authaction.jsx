@@ -25,7 +25,7 @@ export const Registration = (form,setMessage,setSuccessful)=>dispatch=>{
     })
 }
 export const LoginAction = (form)=>dispatch=>{
-    axios.post('/login', form) 
+    axios.post('http://localhost:5000/login', form) 
     .then(res=>{
        
       const {token} = res.data

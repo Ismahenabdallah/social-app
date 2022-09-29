@@ -40,7 +40,7 @@ export default function Register() {
   const [successful, setSuccessful] = useState(false);
   const [message, setMessage] = useState("");
   const dispatch = useDispatch()
-  const errors = useSelector(state => state.errors)
+  const errors = useSelector(state => state.errors.errors)
   
  
     const onChangeHandler = (e) => {
@@ -160,7 +160,7 @@ export default function Register() {
                 
                 </div>
              <div className='mt-64 mr-11 '>
-             {errors.msg ?  <div className='py-5 px-2 w-40 bg-red-400 '>{errors.msg}</div> :""}
+             {errors ?  <div className='py-5 px-2 w-40 bg-red-400 '>{errors.msg}</div> :""}
              {successful ? <div className=' py-5 px-2 w-40 bg-green-400 '>{message}</div> :""}
               </div>     
             </div>
