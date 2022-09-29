@@ -171,7 +171,7 @@ export default function NavBar({ user }) {
                               My Profile
                             </a>
                             <Link
-                              to="#"
+                              to="/"
                               onClick={LogoutHanlder}
                               className="text-gray-700 block px-2 py-2 text-sm"
                               role="menuitem"

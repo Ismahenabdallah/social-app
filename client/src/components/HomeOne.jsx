@@ -1,25 +1,49 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { followusers, GetAllUsers, unfollowusers } from '../redux/actions/useraction';
-
+import {useParams} from 'react-router-dom'
 
 export default function HomeOne({users}) {
  
   const  auth  = useSelector((state) => state.auth.user);// connect7
-  const  userid  = useSelector((state) => state.auth.user._id);// connect7
-
+ 
+  const {userid} = useParams()
 
   const dispatch = useDispatch();
   
-///const [f , setF ] =useState(users)
-const handleFollow = async () => {
-  
-   dispatch(followusers(users._id, userid))
-    //: dispatch(followusers(users._id, userid));
-  //setF((prev) => !prev);
- 
+  const [showfollow,setShowFollow] = useState()
+  const [userProfile,setProfile] = useState(null)
+const handleFollow = async ()=>{
+       await  fetch(`http://localhost:5000/follow`,{
+            method:"put",
+            headers:{
+                "Content-Type":"application/json",
+               
+            },
+            body:JSON.stringify({
+                followId:userid
+            })
+        }).then(res=>{res.json()
+        console.log(res)})
+        .then(data=>{
+        
+            dispatch({type:"UPDATE",payload:{following:data.following,followers:data.followers}})
+             localStorage.setItem("user",JSON.stringify(data))
+             setProfile((prevState)=>{
+                 return {
+                     ...prevState,
+                     user:{
+                         ...prevState.user,
+                         followers:[...prevState.user.followers,data._id]
+                        }
+                 }
+             })
+             setShowFollow(false)
+        })
+    }
 
- }; 
+
+  
 
   useEffect(() => {
     async function fetchData() {

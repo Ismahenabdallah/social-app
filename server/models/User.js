@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-
+const {ObjectId} =mongoose.Schema.Types;
 const userSchema = new mongoose.Schema({
   fullname: String,
   email: String,
@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
   status: {
     type: String, 
     enum: ['Desactive', 'Active'],
-    default: 'Desactive'
+    default: 'Active'
   },
   coverPic: String,
   about: String,
@@ -22,8 +22,8 @@ const userSchema = new mongoose.Schema({
   worksAt: String,
   relationship: String,
   country: String,
-  followers:[],
-  following:[]
+  followers:[{type:ObjectId,ref:"users"}],
+  following:[{type:ObjectId,ref:"users"}]
   
 },
 { timestamps: true }
