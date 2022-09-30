@@ -163,17 +163,18 @@ export default function NavBar({ user }) {
                           <div className="py-1" role="none">
                             <a
                               href="myprofile"
-                              className="text-gray-700 block px-2 py-2 text-sm"
+                              className=" underline text-primary block px-2 py-2 text-sm"
                               role="menuitem"
                               tabIndex="-1"
                               id="menu-item-5"
+                              
                             >
-                              My Profile
+                             {user.fullname}
                             </a>
                             <Link
                               to="/"
                               onClick={LogoutHanlder}
-                              className="text-gray-700 block px-2 py-2 text-sm"
+                              className="text-red-700 block px-2 py-2 text-sm"
                               role="menuitem"
                               tabIndex="-1"
                               id="menu-item-4"

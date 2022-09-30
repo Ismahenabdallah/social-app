@@ -1,4 +1,6 @@
-const UserModel = require("../models/User");
+
+const mongoose = require('mongoose')
+const  UserModel = mongoose.model("users")
 const getAllUsers = async (req, res) => {
   try {
     let users = await UserModel.find();
@@ -10,33 +12,30 @@ const getAllUsers = async (req, res) => {
 };
 const followUsers = async (req, res) => {
 
- 
-UserModel.findByIdAndUpdate(req.body.followId,{
-  $push:{followers:req.user._id}
+  UserModel.findByIdAndUpdate(req.body.followId,{
+    $push:{followers:req.users._id}
 },{
-  new:true
+    new:true
 },(err,result)=>{
-  if(err){
+    if(err){
+        return res.status(422).json({error:err})
+    }
+  UserModel.findByIdAndUpdate(req.users._id,{
+      $push:{following:req.body.followId}
+      
+  },{new:true}).select("-password").then(result=>{
+      res.json(result)
+  }).catch(err=>{
       return res.status(422).json({error:err})
-  }
-UserModel.findByIdAndUpdate(req.user._id,{
-    $push:{following:req.body.followId}
-    
-},{new:true}).then(result=>{
-    res.json(result)
-}).catch(err=>{
-    return res.status(422).json({error:err})
-})
+  })
 
 }
 )
-    
-
 
 
 };
 const FindSingleUser = async (req, res) => {
-  const id = req.params.id
+ 
   try {
     
       const data = await UserModel.findOne({_id:req.params.id})

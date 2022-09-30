@@ -1,11 +1,26 @@
 import axios from "axios";
-import { ALLUSERS, ERRORS, FOLLOW, UNFOLLOW } from "../type";
+import { ALLUSERS, ONEUSER, ERRORS, FOLLOW, UNFOLLOW } from "../type";
 
 export const GetAllUsers = () => dispatch => {
     axios.get("http://localhost:5000/getallusers")
         .then(res => {
             dispatch({
                 type: ALLUSERS,
+                payload: res.data
+            })
+        })
+        .catch(err => {
+            dispatch({
+                type: ERRORS,
+                payload: err.response.data
+            })
+        });
+}
+export const GetOneUser = (id) => dispatch => {
+    axios.get(`http://localhost:5000/user/${id}`)
+        .then(res => {
+            dispatch({
+                type: ONEUSER,
                 payload: res.data
             })
         })

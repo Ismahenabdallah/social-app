@@ -1,6 +1,7 @@
 const express = require("express");
 const session = require("express-session");
 const path = require("path");
+const passport = require("passport");
 const mongoose = require('mongoose')
 var clc = require("cli-color");
 var bodyParser = require('body-parser')
@@ -27,7 +28,7 @@ app.use(
     saveUninitialized: false,
   })
 );
-
+app.use(logger("dev"));
 app.use(express.json({limit:"50mb", extended: false}));
 app.use(express.urlencoded({limit:"50mb", extended: false }));
 app.use(bodyParser.json({limit: "50mb", extended: false }));
@@ -46,12 +47,12 @@ mongoose.connect("mongodb://localhost:27017/social-app",
   .then(() => console.log(clc.bgBlue.underline(`Server running on PORT ${PORT} ...`)))
   .catch(err => console.log(err))
 //morgan
-app.use(logger("dev"));
 
 
-//app.use(passport.initialize())
-//require('./middleware/passport')(passport)
-//require("./controllers/auth_Google_Ctrl")(passport);
+
+app.use(passport.initialize())
+require('./middleware/passport')(passport)
+require("./controllers/auth_Google_Ctrl")(passport);
 
 app.use("/", Auth);
 

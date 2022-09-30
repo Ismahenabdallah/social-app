@@ -23,7 +23,7 @@ export default function Routing({ user }) {
          
         
         } />
-        <Route path={`/profile/${user.id}`} element={
+        <Route path='/:id' element={
          
          <PrivateRouter user={user}>
            <Profile/>
