@@ -1,6 +1,5 @@
 
-const mongoose = require('mongoose')
-const  UserModel = mongoose.model("users")
+const UserModel = require('../models/User');
 const getAllUsers = async (req, res) => {
   try {
     let users = await UserModel.find();
@@ -13,14 +12,14 @@ const getAllUsers = async (req, res) => {
 const followUsers = async (req, res) => {
 
   UserModel.findByIdAndUpdate(req.body.followId,{
-    $push:{followers:req.users._id}
+    $push:{followers:req.users}
 },{
     new:true
 },(err,result)=>{
     if(err){
         return res.status(422).json({error:err})
     }
-  UserModel.findByIdAndUpdate(req.users._id,{
+  UserModel.findByIdAndUpdate(req.users,{
       $push:{following:req.body.followId}
       
   },{new:true}).select("-password").then(result=>{

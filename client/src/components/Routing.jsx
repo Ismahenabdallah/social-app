@@ -7,6 +7,7 @@ import PrivateRouter from './PrivateRouter'
 import NoAccess from './NoAccess';
 import NotFound from './NotFound';
 import Profile from '../pages/Profile';
+import MyProfile from '../pages/MyProfile';
 export default function Routing({ user }) {
 
 /*****style="position: absolute; inset: 0px auto auto 0px; margin: 0px; transform: translate3d(0px, 10.4px, 0px);" */
@@ -23,7 +24,15 @@ export default function Routing({ user }) {
          
         
         } />
-        <Route path='/:id' element={
+         <Route path={`/myprofile`} element={
+         
+         <PrivateRouter user={user}>
+           <MyProfile user={user}/>
+         </PrivateRouter>
+         
+        
+        } />
+        <Route path='/user/:id' element={
          
          <PrivateRouter user={user}>
            <Profile/>
@@ -46,8 +55,8 @@ export default function Routing({ user }) {
             <Register />
           </ForceRedirect>
         } />
-    <Route path="*" element={<NotFound />} />
-          <Route path="/noaccess" element={<NoAccess />} />
+    <Route path="/*" element={<NotFound />} />
+    <Route path="/noaccess" element={<NoAccess />} />
 
 
       </Routes>

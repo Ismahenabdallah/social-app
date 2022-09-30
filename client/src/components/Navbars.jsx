@@ -162,14 +162,14 @@ export default function NavBar({ user }) {
                         >
                           <div className="py-1" role="none">
                             <a
-                              href="myprofile"
+                              href='/user/:id'
                               className=" underline text-primary block px-2 py-2 text-sm"
                               role="menuitem"
                               tabIndex="-1"
                               id="menu-item-5"
                               
                             >
-                             {user.fullname}
+                             My Profile
                             </a>
                             <Link
                               to="/"
