@@ -1,62 +1,35 @@
+
 import React, { useEffect } from 'react'
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector} from 'react-redux'
 import {useParams} from 'react-router-dom'
-import {  GetOneUser } from '../redux/actions/useraction';
+import {  followusers, GetOneUser, unfollowusers } from '../redux/actions/useraction';
+import {  ToastContainer  } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 export default function Profile({user}) {
-  const [showfollow,setShowFollow] = useState()
-  const [userProfile,setProfile] = useState(null)
-  console.log(userProfile)
-  const followUser = ()=>{
-    fetch('http://localhost:5000/follow',{
-        method:"put",
-        headers:{
-            "Content-Type":"application/json",
-            "Authorization":"Bearer "+localStorage.getItem('jwt')
-        },
-        body:JSON.stringify({
-            followId:id
-        })
-    }).then(res=>res.json())
-    .then(data=>{
-     console.log(data)
-       
-        
-      
-         setShowFollow(false)
-    })
-}
-const unfollowUser = ()=>{
-    fetch('http://localhost:5000/unfollow',{
-        method:"put",
-        headers:{
-            "Content-Type":"application/json",
-            "Authorization":"Bearer "+localStorage.getItem('jwt')
-        },
-        body:JSON.stringify({
-            unfollowId:id
-        })
-    }).then(res=>res.json())
-    .then(data=>{
-        
-        dispatch({type:"UPDATE",payload:{following:data.following,followers:data.followers}})
-         localStorage.setItem("user",JSON.stringify(data))
-        
-         setProfile((prevState)=>{
-            const newFollower = prevState.user.followers.filter(item=>item !== data._id )
-             return {
-                 ...prevState,
-                 user:{
-                     ...prevState.user,
-                     followers:newFollower
-                    }
-             }
-         })
-         setShowFollow(true)
-         
-    })
-}
-    const { id } = useParams();
+   const { id } = useParams();
+   const auth = useSelector(state=> state.auth.user)
+   const [follow,setFollow] = useState(auth?!auth.following.includes(id):true)
+ 
+  
+   const Followu = async ()=>{
+   
+  
+     await dispatch(followusers(id, setFollow));
+    
+};
+
+
+const unFollowu = async ()=>{
+   
+  
+  await dispatch(unfollowusers(id,setFollow));
+ 
+
+};
+
+
+  
     const profile = useSelector(state => state.profile) 
   
     const dispatch = useDispatch();
@@ -82,7 +55,7 @@ const unfollowUser = ()=>{
     </div>))}  */
    
   return (
-    <>
+    <div>
      {profile ?   <div className='container  text-center m-7 '>
 
 <div className='flex ml-44  border-b-2 w-[70%] p-2 border-b-gray-400'>
@@ -92,7 +65,13 @@ const unfollowUser = ()=>{
 <div className='ml-[40%] text-start'>
 <h1 className='text-2xl uppercase text-slate-500  '>@{profile.fullname}</h1>
 <h1 className='text-xl  text-slate-700  '>{profile.email}</h1>
-<button onClick={followUser}   className={` text-lg text-center p-2 capitalize text-primary bg-gray-400 hover:bg-slate-500`} >follow  </button>
+
+{follow ?
+ 
+<button onClick={Followu}   className={` text-lg text-center p-2 capitalize text-primary bg-gray-400 hover:bg-slate-500`} >  follow </button> 
+ :<button onClick={unFollowu}   className={` text-lg text-center p-2 capitalize text-primary bg-gray-400 hover:bg-slate-500`} >  unfollow </button>
+ 
+}
  
 </div>
 </div>
@@ -103,8 +82,8 @@ const unfollowUser = ()=>{
 
      
     </div> :" Not Found"}
-    
-    </>
+    <ToastContainer />
+    </div>
    
    
   )

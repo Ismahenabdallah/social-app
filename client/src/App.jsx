@@ -31,7 +31,12 @@ export default function App() {
     pic:auth.user.pic,
     fullname:auth.user.fullname,
     email:auth.user.email,
-
+    followers:auth.user.followers,
+    following:auth.user.following,
+    livesIn:auth.user.livesIn ,
+    worksAt: auth.user.worksAt,
+    relationship: auth.user.relationship,
+    country:auth.user.country,
   }
  
  

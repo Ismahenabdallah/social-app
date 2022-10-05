@@ -4,4 +4,6 @@ export const ALLUSERS= "ALLUSERS";
 export const FOLLOW ="FOLLOW";
 export const UNFOLLOW ="UNFOLLOW";
 export const ONEUSER="ONEUSER";
+export const UPDATE="UPDATE";
+
 

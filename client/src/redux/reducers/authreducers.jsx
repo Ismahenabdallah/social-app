@@ -1,5 +1,5 @@
 import isEmpty from "../../util/isEmpty";
-import { FOLLOW, SET_USER, UNFOLLOW } from "../type";
+import { FOLLOW, SET_USER, UNFOLLOW, UPDATE } from "../type";
 
 
 const initialState = {
@@ -19,17 +19,28 @@ export default function (state = initialState, action) {
       
       case FOLLOW :return{
         ...state,
-       auth: {
-        ...state.auth, 
-        user: {...state.auth.user,
-           following: [...state.auth.user.following, action.data]} }}
+        user:{
+          ...state.user,
+          followers:[...state.user.followers,action.payload.data.followers],
+          following:[...state.user.following,action.payload.data.following]
+         }
+      }
       
        case UNFOLLOW :return {
-       ...state, auth: {...state.auth,
-         user: {...state.auth.user,
-          following: [...state.auth.user.following.filter((personId)=>personId!==action.data)]
-        } }}
+       ...state,
+       user:{
+        ...state.user,
+        followers:[...state.user.followers.filter((personId)=>personId!==action.payload.data)],
+      
+        following: [...state.user.following.filter((personId)=>personId!==action.payload.data)]
+       }
 
+       }
+ case UPDATE:
+      return {
+        ...state,
+         user: action.payload,
+      };
        
             
 

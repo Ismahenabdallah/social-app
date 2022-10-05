@@ -71,7 +71,7 @@ export default function Register() {
         }));
   
     }
-  
+
 
   
     const onSubmit = async (e) => {
@@ -101,7 +101,7 @@ export default function Register() {
                             className="block text-sm font-semibold text-gray-800"
                         >
                           Upload pic
-                          { url?  <img className='w-6 h-6 ' src={url} alt=""/>:"" } 
+                          {url ? <img className='w-6 h-6 ' src={url} alt=""/> : "" } 
                            
                         </label> <div className='block space-y-2 '>
                         <input  className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"

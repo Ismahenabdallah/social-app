@@ -161,16 +161,16 @@ export default function NavBar({ user }) {
                           tabIndex="-1"
                         >
                           <div className="py-1" role="none">
-                            <a
-                              href='/user/:id'
+                            <Link
+                              to='/myprofile'
                               className=" underline text-primary block px-2 py-2 text-sm"
                               role="menuitem"
                               tabIndex="-1"
                               id="menu-item-5"
                               
-                            >
+                            > 
                              My Profile
-                            </a>
+                            </Link>
                             <Link
                               to="/"
                               onClick={LogoutHanlder}

@@ -10,17 +10,40 @@ const getAllUsers = async (req, res) => {
   }
 };
 const followUsers = async (req, res) => {
+ const {followId}= req.body;
+ const id=req.user._id;
+ if (id ==followId) {
+  res.status(403).json("Action Forbidden");
+} 
 
-  UserModel.findByIdAndUpdate(req.body.followId,{
-    $push:{followers:req.users}
+/***
+ * m -[followers[0], following[0]] (connecte req.user._id)
+ * b -[followers[0], following[0]] (req.body)
+ * ---> m follow b 
+ * m -[followers[0], following[1]]
+ * b -[followers[1], following[0]]
+ */
+const followUser = await UserModel.findById(followId); //followers[followId]
+const followingUser = await UserModel.findById(id);    //following[ID]
+
+if (!followUser.followers.includes(id)) {
+  await followUser.updateOne({ $push: { followers: id } });
+  await followingUser.updateOne({ $push: { following: followId } });
+  res.status(200).json("User followed!");
+} else {
+  res.status(403).json("you are already following this user");
+}
+ /*****
+  *  UserModel.findByIdAndUpdate(followId,{
+    $push:{followers:id}
 },{
     new:true
 },(err,result)=>{
     if(err){
         return res.status(422).json({error:err})
     }
-  UserModel.findByIdAndUpdate(req.users,{
-      $push:{following:req.body.followId}
+  UserModel.findByIdAndUpdate(id,{
+      $push:{following:followId}
       
   },{new:true}).select("-password").then(result=>{
       res.json(result)
@@ -30,9 +53,59 @@ const followUsers = async (req, res) => {
 
 }
 )
+  */
 
 
 };
+
+
+// Unfollow a User
+// changed
+const unfollowUsers = async (req, res) => {
+  const {unfollowId}= req.body;
+  const id=req.user._id;
+  if (id ==unfollowId) {
+   res.status(403).json("Action Forbidden");
+ } 
+
+
+ const unfollowUser = await UserModel.findById(unfollowId); //followers[unfollowId]
+const unfollowingUser = await UserModel.findById(id);    //following[ID]
+
+if (unfollowUser.followers.includes(id)) {
+  await unfollowUser.updateOne({ $pull: { followers: id } });
+  await unfollowingUser.updateOne({ $pull: { following: unfollowId } });
+  res.status(200).json("User Unfollowed!");
+} else {
+  res.status(403).json("you are already following this user");
+}
+
+
+
+
+
+  /**** UserModel.findByIdAndUpdate(unfollowId,{
+        $pull:{followers:id}
+    },{
+        new:true
+    },(err,result)=>{
+        if(err){
+            return res.status(422).json({error:err})
+        }
+      UserModel.findByIdAndUpdate(id,{
+          $pull:{following:unfollowId}
+          
+      },{new:true}).select("-password").then(result=>{
+          res.json(result)
+      }).catch(err=>{
+          return res.status(422).json({error:err})
+      })
+
+    }
+    ) */
+};
+
+
 const FindSingleUser = async (req, res) => {
  
   try {
@@ -44,33 +117,24 @@ const FindSingleUser = async (req, res) => {
       res.status(404).json(error.message)
   }
 }
+const updateProfile= async(req,res)=>{
+  try {
+    UserModel.findByIdAndUpdate(req.user._id,req.body,{new:true},
+      (err,result)=>{
+       if(err){
+           return res.status(422).json({error:"pic canot post"})
+       }
+       res.json(result)
+  })
+  } catch (error) {
+    res.status(404).json(error.message)
+  }
+}
 
-// Unfollow a User
-// changed
-const unfollowUsers = async (req, res) => {
- 
-   UserModel.findByIdAndUpdate(req.body.unfollowId,{
-        $pull:{followers:req.user._id}
-    },{
-        new:true
-    },(err,result)=>{
-        if(err){
-            return res.status(422).json({error:err})
-        }
-      UserModel.findByIdAndUpdate(req.user._id,{
-          $pull:{following:req.body.unfollowId}
-          
-      },{new:true}).select("-password").then(result=>{
-          res.json(result)
-      }).catch(err=>{
-          return res.status(422).json({error:err})
-      })
-
-    }
-    )
-};
 module.exports = {
   getAllUsers,
   followUsers,
-  unfollowUsers,FindSingleUser
+  unfollowUsers,
+  FindSingleUser,
+  updateProfile
 }

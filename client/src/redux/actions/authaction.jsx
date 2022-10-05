@@ -9,7 +9,10 @@ export const Registration = (form,setMessage,setSuccessful)=>dispatch=>{
     axios.post('http://localhost:5000/register', form) 
     .then(res=>{
         setSuccessful(true)
-      setMessage("Register Success! Please activate your email to start.")
+     
+        setMessage("Register Success! Please activate your email to start.")
+    
+        
      
       dispatch({
          type:ERRORS,
@@ -30,7 +33,9 @@ export const LoginAction = (form)=>dispatch=>{
        
       const {token} = res.data
       localStorage.setItem("jwt", token)
+    
       const decode = jwt_decode(token)
+      localStorage.setItem("auth",JSON.stringify(decode))
       dispatch(setUser(decode))
       setAuth(token)
      
@@ -45,6 +50,7 @@ export const LoginAction = (form)=>dispatch=>{
 }
 export const Logout = ()=>dispatch=>{
     localStorage.removeItem('jwt')
+    localStorage.clear()
     dispatch({
         type: SET_USER,
         payload: {}

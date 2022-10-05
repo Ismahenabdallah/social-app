@@ -2,8 +2,8 @@ const express = require("express");
 const Router = express.Router();
 //const passport = require("passport");
 const { Register, verifyUser, Login, forgotPassword, resetPassword } = require("../controllers/auth_Simple");
-const { getAllUsers, followUsers, unfollowUsers, FindSingleUser } = require("../controllers/user_Ctr");
-const access_login = require("../middleware/access_login");
+const { getAllUsers, followUsers, unfollowUsers, FindSingleUser, updateProfile } = require("../controllers/user_Ctr");
+const authMiddelwears = require("../middleware/authMiddelwears");
 
 ///Router.get(
 ///  "/auth/google",
@@ -23,13 +23,16 @@ const access_login = require("../middleware/access_login");
 ///    );
 ///  }
 ///);
+const passport = require("passport");
+
 Router.post('/register',Register);
 Router.post('/login',Login);
 Router.get("/confirm/:activation_token", verifyUser)
 Router.post('/forget', forgotPassword)
-Router.post('/reset/', access_login, resetPassword)
-Router.get('/getallusers', getAllUsers)
-Router.get('/user/:id', FindSingleUser)
-Router.put('/follow' ,followUsers)
-Router.put('/unfollow', unfollowUsers)
+Router.post('/reset/', resetPassword)
+Router.get('/getallusers', authMiddelwears,getAllUsers)
+Router.get('/user/:id',authMiddelwears, FindSingleUser)
+Router.put('/follow',authMiddelwears,followUsers)
+Router.put('/unfollow',authMiddelwears, unfollowUsers)
+Router.post('/update',authMiddelwears, updateProfile)
 module.exports = Router;

@@ -16,8 +16,8 @@ const userSchema = new mongoose.Schema({
     enum: ['Desactive', 'Active'],
     default: 'Active'
   },
-  coverPic: String,
-  about: String,
+
+ 
   livesIn: String,
   worksAt: String,
   relationship: String,

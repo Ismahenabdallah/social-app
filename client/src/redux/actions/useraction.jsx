@@ -1,5 +1,24 @@
 import axios from "axios";
-import { ALLUSERS, ONEUSER, ERRORS, FOLLOW, UNFOLLOW } from "../type";
+import { ALLUSERS, ONEUSER, ERRORS, FOLLOW, UNFOLLOW,UPDATE } from "../type";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+const toastOptionssucc = {
+    position: "top-right",
+    autoClose: 8000,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "light",
+  };
+ 
+
+  const toastOptionserrrors = {
+    position: "top-right",
+    autoClose: 8000,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "dark",
+  };
 
 export const GetAllUsers = () => dispatch => {
     axios.get("http://localhost:5000/getallusers")
@@ -8,6 +27,7 @@ export const GetAllUsers = () => dispatch => {
                 type: ALLUSERS,
                 payload: res.data
             })
+            localStorage.setItem("allusres",JSON.stringify(res.data))
         })
         .catch(err => {
             dispatch({
@@ -23,6 +43,7 @@ export const GetOneUser = (id) => dispatch => {
                 type: ONEUSER,
                 payload: res.data
             })
+            localStorage.setItem("Oneusre",JSON.stringify(res.data))
         })
         .catch(err => {
             dispatch({
@@ -31,30 +52,62 @@ export const GetOneUser = (id) => dispatch => {
             })
         });
 }
-export const followusers =(id, data)=>dispatch =>{
-    axios.put(`http://localhost:5000/follow/${id}`, data).then(res=>{
-        console.log(res)
-        dispatch({
+export const followusers = (followId ,setFollow)=>async dispatch =>{
+    await axios.put(`http://localhost:5000/follow`,
+    {
+        followId
+    }).then(async(data)=>{
+   
+       await dispatch({
             type:FOLLOW ,
-            data:id
+            payload:data
         })
-    }).catch(err => {
-        dispatch({
+        toast.success('User Followed Successfully!', toastOptionssucc)
+        //localStorage.setItem("user",JSON.stringify(data))
+        setFollow(false)
+    }).catch(async err => {
+        await dispatch({
             type: ERRORS,
             payload: err.response.data
         })
+        toast.error(err.response.data, toastOptionserrrors)
+    }); 
+}
+export const unfollowusers = (unfollowId , setFollow )=>async dispatch =>{
+    await axios.put(`http://localhost:5000/unfollow`,
+    {
+        unfollowId
+    }).then(async(data)=>{
+   
+       await dispatch({
+            type:UNFOLLOW ,
+            payload:data
+        })
+        toast.success('User UnFollowed !', toastOptionssucc)
+        //localStorage.setItem("user",JSON.stringify(data))
+        setFollow(true)
+    }).catch(async err => {
+        await dispatch({
+            type: ERRORS,
+            payload: err.response.data
+        })
+        toast.error(err.response.data, toastOptionserrrors)
     });
 }
-export const unfollowusers =(id, data)=>dispatch =>{
-    axios.put(`http://localhost:5000/unfollow/${id}`, data).then(res=>{
+export const updateProfile = (form)=>async dispatch =>{
+    await axios.post(`http://localhost:5000/update`,form)
+    .then(res=>{
         dispatch({
-            type:UNFOLLOW ,
-            data:id
+            type: UPDATE,
+            payload: res.data
         })
-    }).catch(err => {
+        toast.success('User Update Successfully!', toastOptionssucc)
+
+    })
+    .catch(err=>{
         dispatch({
             type: ERRORS,
             payload: err.response.data
         })
-    });
+    })
 }
