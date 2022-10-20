@@ -1,6 +1,34 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/***
+
+:root {
+  
+  --video: #4A4EB7;
+ 
+}
+ style={{ color: "var(--video)" }}
+ ***/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 body {

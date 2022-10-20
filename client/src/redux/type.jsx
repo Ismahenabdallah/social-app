@@ -5,5 +5,10 @@ export const FOLLOW ="FOLLOW";
 export const UNFOLLOW ="UNFOLLOW";
 export const ONEUSER="ONEUSER";
 export const UPDATE="UPDATE";
+export const SHAREPOST="SHAREPOST";
+export const SUB="SUB";
+export const ALLPOST= "ALLPOST";
+export const LIKE ="LIKE"
+export const DISLIKE ="DISLIKE"
 
 

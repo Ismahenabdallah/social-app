@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-//import { useSelector } from 'react-redux'
+
 import {BsPencilSquare} from 'react-icons/bs'
 import '../App';
-import { useDispatch } from 'react-redux';
-import { updateProfile } from '../redux/actions/useraction';
+import { useDispatch, useSelector } from 'react-redux';
+import {  updateProfile } from '../redux/actions/useraction';
 import {  ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 ///const toastOptionssucc = {
@@ -26,23 +26,23 @@ export default function MyProfile({user}) {
   })
    const [image, setImage ] = useState("");
    const [ url, setUrl ] = useState("");
-   const uploadImage = (e) => {
-     e.preventDefault();  
-     const data = new FormData()
-     data.append("file", image)
-     data.append("upload_preset","lcxie1ud")
-        data.append("cloud_name","dcd85e7v0")
-        fetch("https://api.cloudinary.com/v1_1/dcd85e7v0/image/upload",{
-             method:"post",
-             body: data
-             })
-     .then(resp => resp.json())
-     .then(data => {
-     setUrl(data.url)
-     })
-     .catch(err => console.log(err))
-     }
+  
     const onChangeHandler = (e) => {
+      if(image){
+        const data = new FormData()
+        data.append("file", image)
+        data.append("upload_preset","lcxie1ud")
+           data.append("cloud_name","dcd85e7v0")
+           fetch("https://api.cloudinary.com/v1_1/dcd85e7v0/image/upload",{
+                method:"post",
+                body: data
+                })
+        .then(resp => resp.json())
+        .then(data => {
+        setUrl(data.url)
+        })
+        .catch(err => console.log(err))
+      }
      setForm((previousValues) => ({
          ...previousValues,
         pic:url,
@@ -62,6 +62,10 @@ export default function MyProfile({user}) {
   
  
    }
+   const profile = useSelector(state => state.profile?.posts) 
+ 
+   
+
   return (
     <div>
 
@@ -96,8 +100,7 @@ export default function MyProfile({user}) {
                    </label> <div className='block space-y-2 '>
                    <input  className="block w-full px-4 py-2 mt-2 text-blue-700 bg-white border rounded-md focus:border-blue-400 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
                     type="file" onChange= {(e)=> setImage(e.target.files[0])} required />
-                 <button className='bg-primary p-2  rounded-md'  onClick={uploadImage}>upload</button>
-         
+                
                    </div>
                       </div>
            <div className="mb-2">
@@ -170,7 +173,7 @@ export default function MyProfile({user}) {
                </div>
                <div className="mr-4 p-3 text-center">
                  <span className="text-xl font-bold block uppercase tracking-wide text-gray-600">
-                   10
+               {profile?.length || 0}
                  </span>
                  <span className="text-sm text-gray-400">Photos</span>
                </div>

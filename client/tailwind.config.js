@@ -33,8 +33,12 @@ module.exports = {
        
       },
       colors: {
-
        primary: '#1857a4',
+      orange: 'rgb(245,133,41)',
+      rose:'rgba(221,42,123,1)',
+      move:' rgba(129,52,175,1)',
+       //linear-gradient(90deg, rgba(245,133,41,1) 0%, rgba(221,42,123,1) 50%, rgba(129,52,175,1) 100%)',
+   
       },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],

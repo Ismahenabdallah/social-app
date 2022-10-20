@@ -24,7 +24,7 @@ export default function Routing({ user }) {
          
         
         } />
-         <Route path={`/myprofile`} element={
+         <Route path='/myprofile' element={
          
          <PrivateRouter user={user}>
            <MyProfile user={user}/>

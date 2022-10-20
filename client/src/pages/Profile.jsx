@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 
 import React, { useEffect } from 'react'
 import { useState } from 'react';
@@ -6,11 +7,22 @@ import {useParams} from 'react-router-dom'
 import {  followusers, GetOneUser, unfollowusers } from '../redux/actions/useraction';
 import {  ToastContainer  } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { GetAllUPost } from '../redux/actions/postaction';
+
 export default function Profile({user}) {
    const { id } = useParams();
    const auth = useSelector(state=> state.auth.user)
    const [follow,setFollow] = useState(auth?!auth.following.includes(id):true)
- 
+   const dispatch = useDispatch();
+   useEffect(() => {
+    async function fetchData() {
+    
+      await dispatch(GetAllUPost());
+      
+    }
+    fetchData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   
    const Followu = async ()=>{
    
@@ -30,9 +42,9 @@ const unFollowu = async ()=>{
 
 
   
-    const profile = useSelector(state => state.profile) 
+    const profile = useSelector(state => state.profile.user) 
   
-    const dispatch = useDispatch();
+   
 
     useEffect(() => {
       async function fetchData() {
@@ -53,10 +65,12 @@ const unFollowu = async ()=>{
         users._id===id ? (<h1>{users.email}</h1>) : ""
     }
     </div>))}  */
-   
+    const posts = useSelector((state) => state.post.posts);
+    console.log(posts)
   return (
     <div>
-     {profile ?   <div className='container  text-center m-7 '>
+     {profile ?  
+      <div className='container  text-center m-7 '>
 
 <div className='flex ml-44  border-b-2 w-[70%] p-2 border-b-gray-400'>
 <div className=' border-2 border-gray-400 rounded-full p-0'>
@@ -76,13 +90,31 @@ const unFollowu = async ()=>{
 </div>
 </div>
 
-  
-  
+<div className='mt-2 bg-gray-500'>
+   
+</div>
 
-
+<div className='  container  text-center m-7  grid grid-cols-3 space-x-2 space-y-2  ' >
+{posts?.map((item) => {
+   
+   if (id === item.postedBy._id) return <div className=''  key={item._id} >
+ 
+     <img  className ='w-44 h-20'src={item.photo} alt="" />
+ 
+    
+      
      
+              
+       
+       </div>
+
+
+  })}
+</div>
     </div> :" Not Found"}
+    
     <ToastContainer />
+  
     </div>
    
    

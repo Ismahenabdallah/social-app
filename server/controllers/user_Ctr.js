@@ -1,5 +1,6 @@
 
 const UserModel = require('../models/User');
+const PostModel = require('../models/Post');
 const getAllUsers = async (req, res) => {
   try {
     let users = await UserModel.find();
@@ -108,14 +109,28 @@ if (unfollowUser.followers.includes(id)) {
 
 const FindSingleUser = async (req, res) => {
  
-  try {
+ /**** try {
     
       const data = await UserModel.findOne({_id:req.params.id})
       res.status(200).json(data)
 
   } catch (error) {
       res.status(404).json(error.message)
-  }
+  } */
+  UserModel.findOne({_id:req.params.id})
+  .select("-password")
+  .then(user=>{
+       PostModel.find({postedBy:req.params.id})
+       .populate("postedBy","_id fullname pic email ,followers,following,status")
+       .exec((err,posts)=>{
+           if(err){
+               return res.status(422).json({error:err})
+           }
+           res.json({user,posts})
+       })
+  }).catch(err=>{
+      return res.status(404).json({error:"User not found"})
+  })
 }
 const updateProfile= async(req,res)=>{
   try {

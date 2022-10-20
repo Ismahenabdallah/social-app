@@ -1,5 +1,6 @@
 
 const UserModel = require('../models/User');
+
 require('dotenv').config()
 const nodemailer = require("nodemailer");
 const jwt = require('jsonwebtoken')
@@ -119,7 +120,7 @@ const Login = async (req, res) => {
     if (user.status !== "Active")
 
         return res.status(400).json({ msg: "Please Verify Your Email!" })
-
+       
     var token = jwt.sign({
         _id: user._id,
         fullname: user.fullname,
@@ -134,6 +135,7 @@ const Login = async (req, res) => {
         country:user.country,
         followers:user.followers,
         following:user.following,
+
 
     }, process.env.PRIVATE_KEY, { expiresIn: '1h' });
     res.status(200).json({
