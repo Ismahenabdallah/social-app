@@ -2,9 +2,9 @@ const express = require("express");
 const Router = express.Router();
 //const passport = require("passport");
 const { Register, verifyUser, Login, forgotPassword, resetPassword } = require("../controllers/auth_Simple");
-const { getAllUsers, followUsers, unfollowUsers, FindSingleUser, updateProfile } = require("../controllers/user_Ctr");
+const { getAllUsers, followUsers, unfollowUsers, FindSingleUser, updateProfile, searchUser } = require("../controllers/user_Ctr");
 const authMiddelwears = require("../middleware/authMiddelwears");
-const {   SharePost, SubPost, allPost, likes, dislikes } = require("../controllers/post_ctr");
+const {   SharePost, SubPost, allPost, likes, dislikes, createComment } = require("../controllers/post_ctr");
 ///Router.get(
 ///  "/auth/google",
 ///  passport.authenticate("google", { scope: ["profile", "email"] })
@@ -42,4 +42,6 @@ Router.get('/sub',authMiddelwears, SubPost)
 Router.get('/allpost',authMiddelwears, allPost)
 Router.put('/like',authMiddelwears, likes)
 Router.put('/dislike',authMiddelwears, dislikes)
+Router.put('/c',authMiddelwears,createComment)
+Router.post('/search',authMiddelwears,searchUser)
 module.exports = Router;

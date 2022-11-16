@@ -1,10 +1,11 @@
 import isEmpty from "../../util/isEmpty";
-import { FOLLOW, SET_USER, UNFOLLOW, UPDATE } from "../type";
+import { FOLLOW, SEARCH, SET_USER, UNFOLLOW, UPDATE } from "../type";
 
 
 const initialState = {
   isConnected: false,
   user: {},
+  searchuserDetails:[]
 
 };
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -42,7 +43,8 @@ export default function (state = initialState, action) {
          user: action.payload,
       };
        
-            
+      case SEARCH:
+        return { ...state, searchuserDetails: action.payload }     
 
     default:
       return state;

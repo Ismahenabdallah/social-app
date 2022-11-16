@@ -1,7 +1,7 @@
 import axios from "axios"
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { ALLPOST, DISLIKE, ERRORS, LIKE, SHAREPOST, SUB } from "../type";
+import { ALLPOST,COMMENT, DISLIKE, ERRORS, LIKE, SHAREPOST, SUB } from "../type";
 
 const toastOptionssucc = {
     position: "top-right",
@@ -22,7 +22,7 @@ const toastOptionssucc = {
     theme: "dark",
   };
 export const SHARE = (form)=>dispatch=>{
-axios.post('http://localhost:5000/share', form).then((res)=>{
+axios.post('http://localhost:5000/share',form).then((res)=>{
     dispatch({
         type: SHAREPOST,
         payload: res.data
@@ -75,10 +75,10 @@ export const GetAllUPost = () => dispatch => {
             })
         });
 }
-export const likepost = (postId ,setLike)=>async dispatch =>{
+export const likepost = (id)=>async dispatch =>{
     await axios.put(`http://localhost:5000/like`,
     {
-        postId
+        postId:id
     }).then(async(data)=>{
    
        await dispatch({
@@ -87,7 +87,7 @@ export const likepost = (postId ,setLike)=>async dispatch =>{
         })
         toast.success('Post Liked Successfully!', toastOptionssucc)
         //localStorage.setItem("user",JSON.stringify(data))
-        setLike(false)
+     
     }).catch(async err => {
         await dispatch({
             type: ERRORS,
@@ -96,19 +96,19 @@ export const likepost = (postId ,setLike)=>async dispatch =>{
         toast.error(err.response.data, toastOptionserrrors)
     }); 
 }
-export const dislikepost = (postId ,setdisLike)=>async dispatch =>{
+
+export const dislikepost = (id)=>async dispatch =>{
     await axios.put(`http://localhost:5000/dislike`,
     {
-        postId
+        postId:id
     }).then(async(data)=>{
    
        await dispatch({
             type:DISLIKE ,
             payload:data
         })
-        toast.success('ALREADY LIKES!', toastOptionssucc)
-        //localStorage.setItem("user",JSON.stringify(data))
-        setdisLike(false)
+       
+       
     }).catch(async err => {
         await dispatch({
             type: ERRORS,
@@ -116,4 +116,22 @@ export const dislikepost = (postId ,setdisLike)=>async dispatch =>{
         })
         toast.error(err.response.data, toastOptionserrrors)
     }); 
+}
+export const Commentaire =(text,postId)=> async dispatch=>{
+    axios.put('http://localhost:5000/c', 
+    {postId, text })
+    .then((data)=>{
+        dispatch({
+            type:COMMENT,
+            payload:data.res
+
+        })
+
+    }).catch((err)=>{
+        dispatch({
+            type:ERRORS,
+            payload:err.response
+
+        })
+    })
 }

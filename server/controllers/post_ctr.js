@@ -139,6 +139,44 @@ const dislikes = async (req, res) => {
        }
        ) */
    };
+const createComment = async (req,res)=>{
+    const comment = {
+        text:req.body.text,
+        postedBy:req.user._id
+    }
+     PostModel.findOneAndUpdate(req.body.postId,{
+        $push:{comments:comment}
+    },{
+        new:true
+    })
+    .populate("comments.postedBy","_id  fullname pic ")
+    .populate("postedBy","_id  fullname pic ").exec((err,result)=>{
+        if(err){
+            return res.status(422).json({error:err})
+        }else{
+            res.json(result)
+        }
+    })
+
+ 
+
+}
+
+
+/**
+ * regular expression use in replace , split search , match, 
+ * test , validation email , 
+ * var s= 'ismahen abdaLlah'
+ * ==> use search
+ * result = s.search(/l/)
+ *  /i/ ==> pattern  yetsama 
+ *  search 'sensible a la casse' 
+ *  ==> use replace 
+ * result = s.replace(/l/, '@') --> heka sensible a la casse zeda bech ybadel
+ * kan el minuscule eli bech ya3rdou f awel 
+ * result =s.replace(/l/i, '@') --> mich ya3mil replace l awel  caracter majus or minuscule ya3rdou khaw 
+ *  result =s.replace(/l/gi, '@') --> global search --> ybadel el caracter el kol  boucle kamil 
+ */
 module.exports={
-  SharePost,SubPost, allPost,likes,dislikes
+  SharePost,SubPost, allPost,likes,dislikes,createComment, 
 }

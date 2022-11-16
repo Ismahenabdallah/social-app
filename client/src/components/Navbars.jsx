@@ -1,18 +1,45 @@
-import { useState } from "react";
+import {  useRef, useState } from "react";
 import Routing from "./Routing";
 import { Link, NavLink } from "react-router-dom";
 
 import notif from './notif.png'
 import msg from './msg.png'
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Logout } from "../redux/actions/authaction";
+import { searchUser } from "../redux/actions/useraction";
 export default function NavBar({ user }) {
   const [navbar, setNavbar] = useState(false);
   const [select, setSelect] = useState(false);
   const dispatch = useDispatch();
+
   const LogoutHanlder = () => {
     dispatch(Logout());
   };
+ 
+ 
+  const searchModal = useRef()
+  const resetShare = () => {
+
+
+    searchModal.current.value = "";
+
+  };
+  const onSubmit = async (e) => {
+    e.preventDefault();
+
+
+    resetShare();
+
+
+
+  };
+  const searchuserDetails = useSelector(state => state.auth.searchuserDetails)
+
+  const [showModal, setShowModal] = useState(false);
+  
+    
+  
+
   return (
     <>
       <nav className="w-full first-line: bg-primary shadow">
@@ -62,9 +89,8 @@ export default function NavBar({ user }) {
           </div>
           <div>
             <div
-              className={`flex-1 justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0 ${
-                navbar ? "block" : "hidden"
-              }`}
+              className={`flex-1 justify-self-center pb-3 mt-8 md:block md:pb-0 md:mt-0 ${navbar ? "block" : "hidden"
+                }`}
             >
               {!user.isConnected ? (
                 <ul className="items-center justify-center  space-y-8 md:flex md:space-x-6  md:space-y-0">
@@ -87,16 +113,17 @@ export default function NavBar({ user }) {
                     </NavLink>
                   </li>
                 </ul>
-              ) :  "" }
+              ) : ""}
               {user.isConnected ? (
                 <>
                   <ul className="items-center justify-center space-y-8 md:flex md:space-x-6 md:space-y-0">
                     <li className="text-white hover:text-indigo-200">
-                      <form className="max-w-sm px-4 mr-32 ">
+                      <div className="max-w-sm px-4   mr-4   ">
                         <div className="relative ">
-                          <svg
+
+                          <svg onClick={() => setShowModal(true)}
                             xmlns="http://www.w3.org/2000/svg"
-                            className="absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-400 left-3"
+                            className="absolute   top-0 bottom-0 w-6 h-6 my-auto text-black left-3 "
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -108,20 +135,71 @@ export default function NavBar({ user }) {
                               d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                             />
                           </svg>
-                          <input
-                            type="text"
-                            placeholder="Search"
-                            className="w-full py-2  pl-12 pr-56 text-gray-500 border rounded-full outline-none bg-gray-50 focus:bg-white focus:border-indigo-600"
-                          />
+                          <>
+
+                            {showModal ? (
+                              <>
+                                <div  ref={searchModal}
+                                  className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none"
+                                >
+                                  <div className="relative  my-6 mx-auto w-[50%] max-w-3xl">
+                                    {/*content*/}
+                                    <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                                      {/*header*/}
+                                      <div className="flex items-start justify-between p-5   rounded-t">
+
+                                      <form onSubmit={onSubmit}>
+                                      <input
+                                          type="text"
+                                           placeholder="search users"
+                                          name="query"
+                                          onChange={(e) => dispatch(searchUser(e.target.value))}
+                                          className="w-[100%] text-black outline-none p-2 "
+                                          ref={searchModal}
+                                         
+                                         
+                                        />
+                                      </form>
+                                      </div>
+                                      {/*body*/}
+                                      <div className=" p-6 flex-auto">
+                                        <ul className="space-x-2 text-blue-600">
+                                          {searchuserDetails?.map(item => {
+                                            return <Link to={`/user/${item._id}`}  onClick={() => {setShowModal(false) 
+                                              }}>
+                                              <li className="">{item.email}</li></Link>
+                                          })}
+
+                                        </ul>
+                                        
+                                      </div>
+                                      {/*footer*/}
+                                      <div className="flex items-center justify-end p-6  rounded-b">
+                                        <button
+                                          className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                          type="button"
+                                          onClick={() => setShowModal(false)}
+                                        >
+                                          Close
+                                        </button>
+
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+                              </>
+                            ) : null}
+                          </>
                         </div>
-                      </form>
+                      </div>
                     </li>
 
                     <li className=" ">
                       <NavLink
                         exact="true"
-                        to="/l"  className=" " >
-                        <img src={notif}  alt="" className=" w-6 rounded-md shadow"  />
+                        to="/l" className=" " >
+                        <img src={notif} alt="" className=" w-6 rounded-md shadow" />
                       </NavLink>
                     </li>
                     <li>
@@ -130,7 +208,7 @@ export default function NavBar({ user }) {
                         to="/r"
                         className=" "
                       >
-                       <img src={msg}  alt="" className=" w-6 rounded-md shadow"  />
+                        <img src={msg} alt="" className=" w-6 rounded-md shadow" />
                       </NavLink>
                     </li>
 
@@ -167,9 +245,9 @@ export default function NavBar({ user }) {
                               role="menuitem"
                               tabIndex="-1"
                               id="menu-item-5"
-                              
-                            > 
-                             My Profile
+
+                            >
+                              My Profile
                             </Link>
                             <Link
                               to="/"
@@ -187,7 +265,7 @@ export default function NavBar({ user }) {
                     </li>
                   </ul>
                 </>
-              ):""}
+              ) : ""}
             </div>
           </div>
         </div>

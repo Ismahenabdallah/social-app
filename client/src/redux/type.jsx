@@ -8,7 +8,8 @@ export const UPDATE="UPDATE";
 export const SHAREPOST="SHAREPOST";
 export const SUB="SUB";
 export const ALLPOST= "ALLPOST";
-export const LIKE ="LIKE"
-export const DISLIKE ="DISLIKE"
-
+export const LIKE ="LIKE";
+export const DISLIKE ="DISLIKE";
+export const COMMENT= "COMMENT";
+export const SEARCH= "SEARCH";
 

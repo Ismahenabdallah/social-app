@@ -8,7 +8,7 @@ export default function HomeOne({users}) {
  
   const  auth  = useSelector((state) => state.auth.user);// connect7
  
-
+ 
   const dispatch = useDispatch();
   
   
@@ -48,7 +48,7 @@ export default function HomeOne({users}) {
 
 
       </ul>
-    
+  
     
     
     </div>

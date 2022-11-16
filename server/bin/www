@@ -20,6 +20,49 @@ app.set("port", port);
  */
 
 var server = http.createServer(app);
+const socket = require("socket.io");
+const io = socket(server, {
+  cors: {
+    origin: "*",
+    credentials: true,
+    methods:['GET','POST'],
+  },
+});
+global.onlineUsers = new Map();
+io.on("connection", (socket) =>
+ {
+  console.log(clc.magenta('Someone connecte ' + socket.id))
+  global.chatSocket = socket;
+  socket.on("add-user", (userId) => {
+    onlineUsers.set(userId, socket.id);
+  });
+
+  socket.on("send-msg", (data) => {
+    const sendUserSocket = onlineUsers.get(data.to);
+    if (sendUserSocket) {
+      socket.to(sendUserSocket).emit("msg-recieve", data.msg);
+   
+    }
+  });
+ 
+  
+  socket.on("disconnect", () => {
+    console.log(clc.red(`${socket.id} disconnected`))
+  });
+
+
+
+
+
+
+}
+
+
+
+
+
+
+);
 
 /**
  * Listen on provided port, on all network interfaces.

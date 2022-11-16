@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ALLUSERS, ONEUSER, ERRORS, FOLLOW, UNFOLLOW,UPDATE } from "../type";
+import { ALLUSERS, ONEUSER, ERRORS, FOLLOW, UNFOLLOW,UPDATE, SEARCH } from "../type";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -111,3 +111,23 @@ export const updateProfile = (form)=>async dispatch =>{
         })
     })
 }
+export const searchUser = (query)=>dispatch=>{
+    axios.post('http://localhost:5000/search',{query}).then((res)=>{
+        dispatch({
+            type: SEARCH,
+            payload: res.data
+        })
+      
+        
+    }).catch((err)=>{
+        dispatch({
+            type: ERRORS,
+            payload: err.response.data
+        })
+        
+    
+    })
+    
+    
+    
+    }

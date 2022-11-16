@@ -145,11 +145,22 @@ const updateProfile= async(req,res)=>{
     res.status(404).json(error.message)
   }
 }
-
+const searchUser = async (req, res)=>{
+  let userPattern = new RegExp("^"+req.body.query)
+  UserModel.find({email:{$regex:userPattern}})
+  .select("_id email")
+  .then(user=>{
+      res.json(user)
+      console.log(user)
+  }).catch(err=>{
+      console.log(err)
+  })
+}
 module.exports = {
   getAllUsers,
   followUsers,
   unfollowUsers,
   FindSingleUser,
-  updateProfile
+  updateProfile,
+  searchUser
 }

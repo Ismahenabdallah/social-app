@@ -66,7 +66,7 @@ export default function HomeTwo () {
     e.preventDefault();
 
 
-  resetShare();
+     resetShare();
  
     dispatch(SHARE(form));
   
