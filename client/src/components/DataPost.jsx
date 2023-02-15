@@ -61,7 +61,7 @@ export default function DataPost() {
                   
                   <BiLike size={"20"} className="" />
                 </button>
-                {posts.likes.length > 1 && <h2>{posts.likes.length} likes </h2>}
+                {posts.likes.length > 0 && <h2>{posts.likes.length} likes </h2>}
                 <button
                   onClick={() => {
                     DISlike(posts._id);

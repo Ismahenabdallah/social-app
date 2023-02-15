@@ -10,6 +10,7 @@ const getAllUsers = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
 const followUsers = async (req, res) => {
  const {followId}= req.body;
  const id=req.user._id;
@@ -106,7 +107,16 @@ if (unfollowUser.followers.includes(id)) {
     ) */
 };
 
-
+const FindOneUser = async (req, res) => {
+ 
+   try {
+     
+       const data = await UserModel.findOne({_id:req.params.id})
+       res.status(200).json(data)
+ 
+   } catch (error) {
+       res.status(404).json(error.message)
+   } }
 const FindSingleUser = async (req, res) => {
  
  /**** try {
@@ -159,8 +169,10 @@ const searchUser = async (req, res)=>{
 module.exports = {
   getAllUsers,
   followUsers,
+  FindOneUser,
   unfollowUsers,
   FindSingleUser,
   updateProfile,
-  searchUser
+  searchUser,
+  
 }

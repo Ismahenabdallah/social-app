@@ -2,7 +2,8 @@ const express = require("express");
 const Router = express.Router();
 //const passport = require("passport");
 const { Register, verifyUser, Login, forgotPassword, resetPassword } = require("../controllers/auth_Simple");
-const { getAllUsers, followUsers, unfollowUsers, FindSingleUser, updateProfile, searchUser } = require("../controllers/user_Ctr");
+const { getAllUsers, followUsers, unfollowUsers, FindSingleUser,
+     updateProfile, searchUser, FindOneUser} = require("../controllers/user_Ctr");
 const authMiddelwears = require("../middleware/authMiddelwears");
 const {   SharePost, SubPost, allPost, likes, dislikes, createComment } = require("../controllers/post_ctr");
 ///Router.get(
@@ -23,7 +24,6 @@ const {   SharePost, SubPost, allPost, likes, dislikes, createComment } = requir
 ///    );
 ///  }
 ///);
-const passport = require("passport");
 
 
 Router.post('/register',Register);
@@ -31,12 +31,15 @@ Router.post('/login',Login);
 Router.get("/confirm/:activation_token", verifyUser)
 Router.post('/forget', forgotPassword)
 Router.post('/reset/', resetPassword)
-Router.get('/getallusers', authMiddelwears,getAllUsers)
+// nzid authMiddelwears
+Router.get('/getallusers',authMiddelwears,  getAllUsers)
+Router.get('/oneuser/:id' ,authMiddelwears, FindOneUser)
 Router.get('/user/:id',authMiddelwears, FindSingleUser)
 Router.put('/follow',authMiddelwears,followUsers)
 Router.put('/unfollow',authMiddelwears, unfollowUsers)
 Router.post('/update',authMiddelwears, updateProfile)
 //post 
+
 Router.post('/share',authMiddelwears,SharePost)
 Router.get('/sub',authMiddelwears, SubPost)
 Router.get('/allpost',authMiddelwears, allPost)

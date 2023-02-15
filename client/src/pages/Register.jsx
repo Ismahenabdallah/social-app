@@ -15,12 +15,7 @@ export default function Register() {
     fullname: "",
   });
 
-  const onImageChange = (event) => {
-    if (event.target.files && event.target.files[0]) {
-      let img = event.target.files[0];
-      setImage(img);
-    }
-  };
+
 
 
   const [successful, setSuccessful] = useState(false);
@@ -29,7 +24,12 @@ export default function Register() {
   const errors = useSelector((state) => state.errors.errors);
   const [image, setImage] = useState("");
   const [url, setUrl] = useState("");
-
+  const onImageChange = (event) => {
+    if (event.target.files && event.target.files[0]) {
+      let img = event.target.files[0];
+      setImage(img);
+    }
+  };
 
   const onChangeHandler = (e) => {
     if (image) {
@@ -78,9 +78,9 @@ export default function Register() {
               >
                 Upload pic
               </label>
-            
-                  <input type="file"  onChange={onImageChange} />
-             
+
+              <input type="file" onChange={onImageChange} />
+
             </div>
             <div className="mb-2">
               <label

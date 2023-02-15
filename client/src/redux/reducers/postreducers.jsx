@@ -22,7 +22,7 @@ export default function (state = initialState, action) {
         ...state,
         subpost: {
           ...state.subpost,
-          likes: [...state.subpost.likes, action.payload.data.likes],
+          likes: [...state.subpost.likes, action.payload],
           //likes:[...state.subpost.likes.filter((personId)=>personId!==action.payload.data)],
         },
       };
@@ -34,7 +34,7 @@ export default function (state = initialState, action) {
           //  likes:[...state.subpost.likes,action.payload.data],
           likes: [
             ...state.subpost.likes.filter(
-              (personId) => personId !== action.payload.data
+              (personId) => personId !== action.payload
             ),
           ],
         },

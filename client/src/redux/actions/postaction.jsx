@@ -83,7 +83,7 @@ export const likepost = (id)=>async dispatch =>{
    
        await dispatch({
             type:LIKE ,
-            payload:data
+            payload:data.res
         })
         toast.success('Post Liked Successfully!', toastOptionssucc)
         //localStorage.setItem("user",JSON.stringify(data))
@@ -105,7 +105,7 @@ export const dislikepost = (id)=>async dispatch =>{
    
        await dispatch({
             type:DISLIKE ,
-            payload:data
+            payload:data.res
         })
        
        
